@@ -33,7 +33,7 @@ jobs:
 
       - name: Send Data to Green Dev Backend
         run: |
-          curl -X POST http://2zpb19X0JRtYMf3bfF6lG8Uebma_41Qsci1BLFMsPfRkjsLgy/api/green-metrics \
+          curl -X POST https://add745e94f35.ngrok-free.app/api/green-metrics \
             -H "Content-Type: application/json" \
             -d '{
               "repo": "${{ github.repository }}",
