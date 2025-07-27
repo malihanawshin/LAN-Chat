@@ -30,18 +30,17 @@ jobs:
           start=${{ steps.start.outputs.time }}
           end=${{ steps.end.outputs.time }}
           echo "duration=$((end - start))" >> $GITHUB_OUTPUT
-          
-      - name: Send Data to Green Dev Backend
-  run: |
-    curl -X POST http://18.185.23.135:3000/api/green-metrics \
-      -H "Content-Type: application/json" \
-      -d '{
-        "repo": "${{ github.repository }}",
-        "branch": "${{ github.ref_name }}",
-        "commit": "${{ github.sha }}",
-        "duration": ${{ steps.duration.outputs.duration }},
-        "runner_type": "${{ runner.os }}"
-      }'
 
+      - name: Send Data to Green Dev Backend
+        run: |
+          curl -X POST https://18.185.23.135:3000/api/green-metrics \
+            -H "Content-Type: application/json" \
+            -d '{
+              "repo": "${{ github.repository }}",
+              "branch": "${{ github.ref_name }}",
+              "commit": "${{ github.sha }}",
+              "duration": ${{ steps.duration.outputs.duration }},
+              "runner_type": "${{ runner.os }}"
+            }'
 
             
