@@ -18,7 +18,7 @@ jobs:
 
       # build or test command
       - name: Simulated Build Step
-        run: sleep 20  # simulate a 15-second build
+        run: sleep 12  # simulate a 15-second build
 
       - name: Record End Time
         id: end
