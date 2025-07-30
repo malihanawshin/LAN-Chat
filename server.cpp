@@ -1,9 +1,8 @@
-//
 //  server.cpp
 //  Chat Away
 //
 //  Created by Maliha on 2/5/25.
-//
+
 
 #include <stdio.h>
 
