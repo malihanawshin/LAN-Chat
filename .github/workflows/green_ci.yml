@@ -32,7 +32,7 @@ jobs:
           echo "duration=$((end - start))" >> $GITHUB_OUTPUT
       - name: Send Data to Green Dev Backend
         run: |
-          curl -X POST https://5f0a24f03b23.ngrok-free.app/api/green-metrics \
+          curl -X POST https://f1fdd67b3d1c.ngrok-free.app/api/green-metrics \
             -H "Content-Type: application/json" \
             -d '{
               "repo": "${{ github.repository }}",
