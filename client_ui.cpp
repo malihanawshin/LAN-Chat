@@ -14,6 +14,7 @@
 #include <arpa/inet.h>
 #include <string>
 #include <mutex>
+#include <cstring>
 
 WINDOW *outputWin, *inputWin;
 std::mutex print_mutex;

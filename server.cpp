@@ -5,7 +5,7 @@
 
 
 #include <stdio.h>
-
+#include <algorithm>
 #include <iostream>
 #include <sstream>
 #include <unistd.h>
