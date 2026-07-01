@@ -1,4 +1,4 @@
-name: Green CI Build
+name: Green CI Metrics
 
 on:
   push:
@@ -6,34 +6,39 @@ on:
       - main
 
 jobs:
-  build:
+  green-metrics:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-      - name: Record Start Time
+      - name: Record start time
         id: start
-        run: echo "time=$(date +%s)" >> $GITHUB_OUTPUT
+        run: echo "time=$(date +%s)" >> "$GITHUB_OUTPUT"
 
-      # build or test command
-      - name: Simulated Build Step
-        run: sleep 12  # simulate a 15-second build
+      - name: Simulated build step
+        run: sleep 12
 
-      - name: Record End Time
+      - name: Record end time
         id: end
-        run: echo "time=$(date +%s)" >> $GITHUB_OUTPUT
+        run: echo "time=$(date +%s)" >> "$GITHUB_OUTPUT"
 
-      - name: Calculate Duration
+      - name: Calculate duration
         id: duration
         run: |
           start=${{ steps.start.outputs.time }}
           end=${{ steps.end.outputs.time }}
-          echo "duration=$((end - start))" >> $GITHUB_OUTPUT
-      - name: Send Data to Green Dev Backend
+          echo "duration=$((end - start))" >> "$GITHUB_OUTPUT"
+
+      - name: Send data to Green Dev Backend
+        env:
+          GREEN_METRICS_URL: ${{ secrets.GREEN_METRICS_URL }}
+          GREEN_METRICS_TOKEN: ${{ secrets.GREEN_METRICS_TOKEN }}
         run: |
-          curl -X POST https://f1fdd67b3d1c.ngrok-free.app/api/green-metrics \
+          curl --fail --show-error --silent -X POST "$GREEN_METRICS_URL" \
             -H "Content-Type: application/json" \
+            -H "Authorization: Bearer $GREEN_METRICS_TOKEN" \
             -d '{
               "repo": "${{ github.repository }}",
               "branch": "${{ github.ref_name }}",
@@ -41,4 +46,3 @@ jobs:
               "duration": ${{ steps.duration.outputs.duration }},
               "runner_type": "${{ runner.os }}"
             }'
-
