@@ -13,18 +13,32 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Record start time
+      - name: Install build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y g++ libncurses-dev
+
+      - name: Record build start time
         id: start
         run: echo "time=$(date +%s)" >> "$GITHUB_OUTPUT"
 
-      - name: Simulated build step
-        run: sleep 12
+      - name: Build LAN-Chat
+        run: |
+          g++ server.cpp -o server -pthread -std=c++11
+          g++ client.cpp -o client -pthread -std=c++11
+          g++ client_ui.cpp -o client_ui -lncurses -pthread -std=c++11
 
-      - name: Record end time
+      - name: Verify build outputs
+        run: |
+          test -x server
+          test -x client
+          test -x client_ui
+
+      - name: Record build end time
         id: end
         run: echo "time=$(date +%s)" >> "$GITHUB_OUTPUT"
 
-      - name: Calculate duration
+      - name: Calculate build duration
         id: duration
         run: |
           start=${{ steps.start.outputs.time }}
